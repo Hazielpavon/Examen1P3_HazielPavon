@@ -9,12 +9,12 @@ private:
 	int cantidadCombustible; 
 	
 public: 
-	void InicializarEspacio(char** Espac);
-	void borrar(); 
+	char** InicializarEspacio();
+	~Juego(); 
 	void MostrarTablero(char** Espac);
 	void MoverNave(int dirección); 
 	bool VerificarColision(int dirección, char** Espac);
 	bool Aterrizar(int dirección, char** Espac);
-	bool JuegoTerminado(); 
+	bool JuegoTerminado(bool aterrizo, bool choco, int gaso); 
 };
 
