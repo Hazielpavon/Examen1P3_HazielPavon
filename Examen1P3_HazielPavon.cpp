@@ -27,6 +27,7 @@ int main()
 	char** mat = g.InicializarEspacio();
 	while (!gano) {
 		g.MostrarTablero(mat);
+		gasolina -= 10; 
 		cout << "Ingrese la posicion en la que quiere moverse 1) arriba, 2) abajo, 3)Derecha, 4) Izquierda: o 0 para salir " << endl;
 		eje = 0;
 		cin >> eje;
