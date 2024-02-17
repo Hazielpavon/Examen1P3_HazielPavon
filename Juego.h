@@ -12,9 +12,10 @@ public:
 	char** InicializarEspacio();
 	~Juego(); 
 	void MostrarTablero(char** Espac);
-	void MoverNave(int dirección, char** Espac);
-	char VerificarColision(char** Espac, int gaso, int personas, int direccion);
-	bool Aterrizar(int dirección, char** Espac);
-	bool JuegoTerminado(bool aterrizo, bool choco, int gaso); 
+	char MoverNave(int dirección, char** Espac);
+	char VerificarColision(char p);
+	void Aterrizar(char p, int personas);
+	bool JuegoTerminado(int per, int gaso); 
+	// aca retornan los char o bools
 };
 

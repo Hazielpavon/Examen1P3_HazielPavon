@@ -4,6 +4,7 @@ using namespace std;
 
 char** Juego::InicializarEspacio()
 {
+	// inicio la memoria para la matriz 
 	bool vali = true;
 	char x[] = { 'S', 'P', 'E', 'M' };
 	srand((unsigned)time(NULL));
@@ -55,6 +56,7 @@ char** Juego::InicializarEspacio()
 		}
 	}
 	return espacio;
+	// y aca mismo lleno la matriz y la retorno para mostrarla en el main 
 }
 
 void Juego::MostrarTablero(char** Espac)
@@ -67,87 +69,55 @@ void Juego::MostrarTablero(char** Espac)
 		}
 		cout << endl;
 	}
+	// muestro la matriz 
 }
-char Juego::VerificarColision(char** Espac, int com, int per, int direccion)
+char Juego::VerificarColision(char p)
 {
-	/* Si la nave llega a la posición donde se encontraba una estrella, la nave pierde
-		 3 pasajeros.
-		 o Si la nave llega a la posición donde se encontraba un sol, la nave pierde 5
-		 pasajeros.
-		 o Si la nave llega a la posición donde se encontraba un planeta, la nave gana 20
-		 de combustible.*/
-
-
-	cantidadCombustible = com;
-	cantidadPersonas = per;
-
-	navePosicionX = -1;
-	navePosicionY = -1;
-	for (int i = 0; i < 6; i++)
-	{
-		for (int j = 0; j < 6; j++)
-		{
-			if (Espac[i][j] == 'H') {
-				navePosicionX = i;
-				navePosicionY = j;
-				break;
-			}
-		}
-		if (navePosicionX != -1) {
-			break;
-		}
+	if (p == 'E') {
+		cout << "Ha chocado con una Estrella, se le restaron 3 personas" << endl;
+		return 'E';
 	}
-	int nuevaFilaNave = navePosicionX;
-	int nuevaColumnaNave = navePosicionY;
-	if (direccion == 1) {  // Arriba
-		nuevaFilaNave--;
+	else if (p == 'S') {
+		cout << "Ha chocado con un Sol, se le restaron 5 personas" << endl;
+		return 'S';
 	}
-	else if (direccion == 2) {  // Abajo
-		nuevaFilaNave++;
+	else if (p == 'P') {
+		cout << "Ha chocado con un Planeta, se le sumo 20 de gasolina!" << endl;
+		return 'P';
 	}
-	else if (direccion == 3) {  // Derecha
-		nuevaColumnaNave++;
-	}
-	else if (direccion == 4) {  // Izquierda
-		nuevaColumnaNave--;
-	}
-	if (nuevaFilaNave >= 0 && nuevaFilaNave < 6 && nuevaColumnaNave >= 0 && nuevaColumnaNave < 6) {
-
-		if (Espac[nuevaFilaNave][nuevaColumnaNave] == 'E') {
-			return 'E'; 
-		}
-		else if (Espac[nuevaFilaNave][nuevaColumnaNave] == 'S') {
-			return 'S';
-		}
-		else if (Espac[nuevaFilaNave][nuevaColumnaNave] == 'P') {
-			return 'P'; 
-		}
-
-	}
-
+	return ' ';
+	// validando de los caracteres capturados para tener un codigo mas eficiente 
 }
-
-bool Juego::Aterrizar(int dirección, char** Espac)
+void Juego::Aterrizar(char x, int personas)
 {
-	return true;
+	if (x == 'M') {
+		cout << "Felicidades,ha logrado llegar a Marte con: " << personas << ", pasajeros!" << endl;
+	}
+	// validacion simple 
 }
 
-bool Juego::JuegoTerminado(bool att, bool col, int gasolina) {
-
-
-
+bool Juego::JuegoTerminado(int per, int gasolina) {
+	if (per == 0) {
+		cout << "Todos suspasajeros han muerto antes de llegar a marte" << endl;
+		return true;
+	}
+	else if (gasolina == 0) {
+		cout << "Se ha quedado sin combustible y se ha perdido en el espacio con: " << per << ", pasajeros" << endl;
+		return true;
+	}
 	return false;
 }
 
 Juego::~Juego() {
-	delete[] espacio;
 	for (int i = 0; i < 6; i++)
 	{
 		delete[] espacio[i];
 	}
+	delete[] espacio;
 }
-void Juego::MoverNave(int direccion, char** Espac)
+char Juego::MoverNave(int direccion, char** Espac)
 {
+	// inicio las variables 
 	navePosicionX = -1;
 	navePosicionY = -1;
 	for (int i = 0; i < 6; i++)
@@ -158,17 +128,17 @@ void Juego::MoverNave(int direccion, char** Espac)
 				navePosicionX = i;
 				navePosicionY = j;
 				break;
+				// capturo la posicion 
 			}
-		}
-		if (navePosicionX != -1) {
-			break;
 		}
 	}
 
 	Espac[navePosicionX][navePosicionY] = ' ';
+	// el espacio anterior ahora es un espacio vacio 
 
 	int nuevaFilaNave = navePosicionX;
 	int nuevaColumnaNave = navePosicionY;
+	// estos valores nuevos los modificare en base el movimiento del usuario 
 	if (direccion == 1) {  // Arriba
 		nuevaFilaNave--;
 	}
@@ -182,12 +152,17 @@ void Juego::MoverNave(int direccion, char** Espac)
 		nuevaColumnaNave--;
 	}
 	if (nuevaFilaNave >= 0 && nuevaFilaNave < 6 && nuevaColumnaNave >= 0 && nuevaColumnaNave < 6) {
-
+		char x = Espac[nuevaFilaNave][nuevaColumnaNave];
+		// esta linea es la mas importante de mi codigo, capturo el caracter par utilizarlo en todo el codigo 
 		Espac[nuevaFilaNave][nuevaColumnaNave] = 'H';
+		return x;
+		// y esa misma variable la retorno 
 	}
 	else {
 		Espac[navePosicionX][navePosicionY] = 'H';
-		cout << "No puede Salirse del mapa de juego" << endl; 
+		cout << "No puede Salirse del mapa de juego" << endl;
 	}
-
+	// validacion para que no se salga de la matriz 
+	return ' ';
+	// si no hay nignun caracter no retorna nada 
 }
